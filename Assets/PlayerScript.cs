@@ -11,6 +11,12 @@ public class PlayerScript : MonoBehaviour
     private float rotationInput;
     private bool isThrusting;
 
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+
+    public float fireRate = 0.25f;
+    private float nextFireTime = 0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -22,6 +28,12 @@ public class PlayerScript : MonoBehaviour
     {
         isThrusting = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
         rotationInput = Input.GetAxis("Horizontal"); // A/D or Left/Right
+
+        if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
+        {
+            Fire();
+            nextFireTime = Time.time + fireRate; // delay between shots
+        }
     }
 
     void FixedUpdate()
@@ -45,6 +57,11 @@ public class PlayerScript : MonoBehaviour
         // Apply torque for rotation
         float rotation = -rotationInput * rotationSpeed * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation + rotation);
+    }
+
+    private void Fire()
+    {
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
 }
