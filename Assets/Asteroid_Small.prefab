@@ -183,3 +183,4 @@ MonoBehaviour:
   asteroidSize: 0
   minSpeed: 1
   maxSpeed: 3
+  scoreToAdd: 50

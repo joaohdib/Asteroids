@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    [SerializeField] private TextMeshProUGUI scoreText;
 
+    public static GameManager Instance { get; private set; }
     public int score = 0;
 
     void Awake()
@@ -22,6 +24,6 @@ public class GameManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        Debug.Log("Pontuação Atual: " + score);
+        scoreText.text = score.ToString();
     }
 }
