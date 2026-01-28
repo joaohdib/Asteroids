@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Laser : MonoBehaviour
@@ -29,4 +30,22 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Asteroid"))
+        {
+            Asteroid asteroid = other.GetComponent<Asteroid>(); // Getting asteroid size
+
+            if (asteroid != null)
+            {
+                asteroid.Die();
+            }
+
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
+    }
+
+
 }

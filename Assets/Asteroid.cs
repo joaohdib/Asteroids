@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    public GameObject subAsteroidPrefab;
+    public int numberOfSubAsteroids = 2;
+
+    public enum Size { Small, Medium, Large };
+    public Size asteroidSize;
 
     public float minSpeed = 1f;
     public float maxSpeed = 3f;
     private Rigidbody2D rb;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,16 +20,23 @@ public class Asteroid : MonoBehaviour
 
         Vector2 randomDirection = Random.insideUnitCircle.normalized; // random 360 degrees direction
 
-        float speed = Random.Range(minSpeed,maxSpeed);
+        float speed = Random.Range(minSpeed, maxSpeed);
 
         rb.linearVelocity = randomDirection * speed;
 
-        rb.AddTorque(Random.Range(-20f,20f));
+        rb.AddTorque(Random.Range(-20f, 20f));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Die()
     {
-        
+        if (subAsteroidPrefab != null)
+        {
+            for (int i = 0; i < numberOfSubAsteroids; i++)
+            {
+                Instantiate(subAsteroidPrefab, transform.position, Quaternion.identity);
+            }
+        }
+
+        Destroy(gameObject);
     }
 }
