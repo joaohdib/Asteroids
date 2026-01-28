@@ -17,6 +17,8 @@ public class PlayerScript : MonoBehaviour
     public float fireRate = 0.25f;
     private float nextFireTime = 0f;
 
+    public int life = 5;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -62,6 +64,26 @@ public class PlayerScript : MonoBehaviour
     private void Fire()
     {
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Asteroid"))
+        {
+
+            Debug.Log("Collision! Life: " + life);
+            life--;
+            if (life < 1)
+            {
+                Die();
+            }
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player has died!");
+        Destroy(gameObject);
     }
 
 }
