@@ -91,7 +91,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -7509217843230795647, guid: 3558d469a3e8d7549be5d0b123a99a6f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -181,7 +181,6 @@ MonoBehaviour:
   explosionScale: 2
   explosionPrefab: {fileID: 7572789672949793124, guid: 2805ab016b32fc1418aa4b56f277b3ea, type: 3}
   subAsteroidPrefab: {fileID: 0}
-  numberOfSubAsteroids: 2
   asteroidSize: 0
   minSpeed: 1
   maxSpeed: 3
