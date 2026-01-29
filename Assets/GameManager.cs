@@ -4,6 +4,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private PlayerScript playerScript;
 
     public static GameManager Instance { get; private set; }
     public int score = 0;
@@ -26,4 +29,24 @@ public class GameManager : MonoBehaviour
         score += amount;
         scoreText.text = score.ToString();
     }
+
+    public void GameOver()
+    {
+        gameOverPanel.SetActive(true);
+        gameOverText.text = "Your score: " + score.ToString();
+        Time.timeScale = 0f;
+    }
+
+    public void RestartGame()
+    {
+
+        playerScript.RestartPlayer();
+        DestroyAllAsteroids();
+    }
+
+    private void DestroyAllAsteroids()
+    {
+        
+    }
+
 }
