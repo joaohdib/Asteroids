@@ -8,7 +8,6 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private GameObject explosionPrefab;
 
     public GameObject subAsteroidPrefab;
-    public int numberOfSubAsteroids = 2;
 
     public enum Size { Small, Medium, Large };
     public Size asteroidSize;
@@ -36,21 +35,47 @@ public class Asteroid : MonoBehaviour
         GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity); // Asteroid explosion sprite
         explosion.transform.localScale = Vector3.one * explosionScale;
 
-        SoundManager.Instance.PlaySound("Explosion"); 
-        
+        SoundManager.Instance.PlaySound("Explosion");
+
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<Collider2D>().enabled = false;
 
         if (subAsteroidPrefab != null)
         {
-            for (int i = 0; i < numberOfSubAsteroids; i++)
-            {
-                Instantiate(subAsteroidPrefab, transform.position, Quaternion.identity);
-            }
+            CreateSmallerAsteroids();
         }
 
 
         GameManager.Instance.AddScore(scoreToAdd);
         Destroy(gameObject);
     }
+
+    private void CreateSmallerAsteroids()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            float offsetValue;
+
+            if (i == 0)
+            {
+                offsetValue = -0.5f;
+            }
+
+            else
+            {
+                offsetValue = 0.5f;
+            }
+
+            Vector3 spawnPos = transform.position;
+            spawnPos.x += offsetValue;
+            spawnPos.y += offsetValue;
+
+            GameObject small = Instantiate(subAsteroidPrefab, spawnPos, Quaternion.identity);
+
+            Rigidbody2D rbSmall = small.GetComponent<Rigidbody2D>();
+            rbSmall.linearVelocity = new Vector2(offsetValue * 2f, offsetValue * 2f);
+
+        }
+    }
+
 }

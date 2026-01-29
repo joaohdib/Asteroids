@@ -14,7 +14,8 @@ public class HealthUI : MonoBehaviour
             Image heartImage = heartIcons[i].GetComponent<Image>();
             if (i < currentHealth)
             {
-                heartImage.enabled = true;  
+                heartImage.enabled = true;
+                heartImage.color = Color.white; // Or new Color(1, 1, 1, 1f);
             }
             else
             {

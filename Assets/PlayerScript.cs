@@ -102,10 +102,12 @@ public class PlayerScript : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<Collider2D>().enabled = false;
+
         GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         explosion.transform.localScale = Vector3.one * explosionScale;
         SoundManager.Instance.PlaySound("ShipExplosion");
-        Invoke("GameOver", 0.3f);
+
+        Invoke("GameOver", 0.3f); // Callin GameOver function after 0.3 seconds delay
     }
 
     private void GameOver()
@@ -127,10 +129,17 @@ public class PlayerScript : MonoBehaviour
     public void RestartPlayer()
     {
         health = 5;
+
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+
         transform.position = Vector3.zero; // Position zero to the player
-        healthUI.UpdateHealthDisplay(health);
+
+        healthUI.UpdateHealthDisplay(5);
+        
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
+        
     }
 
 }
