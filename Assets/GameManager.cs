@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using TMPro;
 using UnityEngine;
 
@@ -39,14 +40,38 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-
         playerScript.RestartPlayer();
         DestroyAllAsteroids();
+        ResetScore();
+        gameOverPanel.SetActive(false);
+        Time.timeScale = 1f;
+
     }
+
+    private void ResetScore()
+    {
+        
+        score = 0;
+        scoreText.text = "0";
+
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 
     private void DestroyAllAsteroids()
     {
-        
+
+        GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+
+        foreach (GameObject asteroid in asteroids)
+        {
+            Destroy(asteroid);
+        }
+
     }
 
 }

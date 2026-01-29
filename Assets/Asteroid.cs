@@ -3,6 +3,10 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class Asteroid : MonoBehaviour
 {
+    [Header("Explosion Settings")]
+    [SerializeField] private float explosionScale = 1f;
+    [SerializeField] private GameObject explosionPrefab;
+
     public GameObject subAsteroidPrefab;
     public int numberOfSubAsteroids = 2;
 
@@ -29,6 +33,14 @@ public class Asteroid : MonoBehaviour
 
     public void Die()
     {
+        GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity); // Asteroid explosion sprite
+        explosion.transform.localScale = Vector3.one * explosionScale;
+
+        SoundManager.Instance.PlaySound("Explosion"); 
+        
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+
         if (subAsteroidPrefab != null)
         {
             for (int i = 0; i < numberOfSubAsteroids; i++)
@@ -36,6 +48,8 @@ public class Asteroid : MonoBehaviour
                 Instantiate(subAsteroidPrefab, transform.position, Quaternion.identity);
             }
         }
+
+
         GameManager.Instance.AddScore(scoreToAdd);
         Destroy(gameObject);
     }

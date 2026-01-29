@@ -178,6 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d330611fded99547a7eafa78a53428c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionScale: 3
+  explosionPrefab: {fileID: 7572789672949793124, guid: 2805ab016b32fc1418aa4b56f277b3ea, type: 3}
   subAsteroidPrefab: {fileID: 8730545796941099426, guid: 9636d62a26fcad4489c03dbe8c6700c8, type: 3}
   numberOfSubAsteroids: 2
   asteroidSize: 1

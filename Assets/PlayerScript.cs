@@ -1,11 +1,14 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
 
-    [Header("Movement Settings")]
     public float thrustSpeed = 5f;
     public float rotationSpeed = 180f;
+
+    [SerializeField] private float explosionScale = 1f;
+    [SerializeField] private GameObject explosionPrefab;
 
     private Rigidbody2D rb;
     private float rotationInput;
@@ -21,16 +24,34 @@ public class PlayerScript : MonoBehaviour
 
     public HealthUI healthUI;
 
+    private Animator animator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         isThrusting = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        float verticalInput = Input.GetAxis("Vertical");
+
+        if (verticalInput > 0)
+        {
+            animator.SetBool("Flying", true);
+        }
+        else
+        {
+            animator.SetBool("Flying", false);
+        }
+
         rotationInput = Input.GetAxis("Horizontal"); // A/D or Left/Right
 
         if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
@@ -66,6 +87,7 @@ public class PlayerScript : MonoBehaviour
     private void Fire()
     {
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        SoundManager.Instance.PlaySound("Laser");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -78,7 +100,16 @@ public class PlayerScript : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        explosion.transform.localScale = Vector3.one * explosionScale;
+        SoundManager.Instance.PlaySound("ShipExplosion");
+        Invoke("GameOver", 0.3f);
+    }
+
+    private void GameOver()
+    {
         GameManager.Instance.GameOver();
     }
 
@@ -86,6 +117,7 @@ public class PlayerScript : MonoBehaviour
     {
         health--;
         healthUI.UpdateHealthDisplay(health);
+        SoundManager.Instance.PlaySound("Hit");
         if (health < 1)
         {
             Die();
@@ -96,6 +128,9 @@ public class PlayerScript : MonoBehaviour
     {
         health = 5;
         transform.position = Vector3.zero; // Position zero to the player
+        healthUI.UpdateHealthDisplay(health);
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
     }
 
 }
